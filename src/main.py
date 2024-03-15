@@ -56,14 +56,20 @@ def interpret(tokens: list[Instruction]) -> None:
     if_stack: list = []
 
     t_idx: int = 0
+    step: bool = False
 
     while t_idx < len(tokens):
         token: Token = tokens[t_idx].token
         value = tokens[t_idx].value
 
-        if token in (Token.PUSHN, Token.PUSHS):
-            stack.append(value)
+        if step:
+            print(f'{t_idx:02}: {stack}')
 
+        if token == Token.STEP:
+            step = not step
+
+        elif token in (Token.PUSHN, Token.PUSHS):
+            stack.append(value)
         elif token == Token.POP:
             stack.pop()
         elif token == Token.CLEAR:
@@ -167,6 +173,8 @@ def main() -> None:
     with open('./ex.slit') as f:
         lexer = Lexer(f.readlines())
     
+    lexer.add_rule('step', Token.STEP)
+
     lexer.add_rule('pushn (\d+)'    , Token.PUSHN)
     lexer.add_rule('pushs \"(\w+)\"', Token.PUSHS)
 
