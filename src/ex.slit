@@ -1,8 +1,7 @@
-step
 pushn 2
 pushn 2
 add
-iflt 4
+ifeq 4
 	pushs "SuccessA"
 	put
 	clear

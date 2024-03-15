@@ -44,6 +44,12 @@ class Token(Enum):
     PUT   = auto() # Put on the screen
     DUMP  = auto() # Dumps the stack state to the screen
 
+CONDITIONAL_TOKENS: tuple[Token] = (
+    Token.IFEQ, Token.IFNEQ,
+    Token.IFLT, Token.IFLET,
+    Token.IFGT, Token.IFGET
+)
+
 class Instruction:
     def __init__(self: Instruction, token: Token) -> None:
         self.token = token
