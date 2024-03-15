@@ -1,4 +1,22 @@
 pushn 2
-pushn 3
-pow
+pushn 2
+add
+ifeq 4
+	pushs "SuccessA"
+	put
+	clear
+	pushn 2
+	pushn 2
+	ifeq 4
+		pushs "SuccessB"
+		put
+	else
+		pushs "FailureB"
+		put
+	endif
+else
+	pushs "FailureA"
+	put
+endif
+pushn 5
 put

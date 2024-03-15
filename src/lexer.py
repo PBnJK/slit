@@ -9,12 +9,18 @@ import re
 
 class Token(Enum):
     """All possible token values"""
+    
+    # Debug directives
+    STEP  = auto() # Prints line number + stack at every instruction
 
+    # Stack manipulation
     PUSHN = auto() # Push a number onto the stack
     PUSHS = auto() # Push a string onto the stack
 
     POP   = auto() # Pop off of the stack
+    CLEAR = auto() # Clears the stack
 
+    # Arithmetic
     ADD   = auto() # Add the top 2 numbers on the stack
     SUB   = auto() # Subtract the top 2 numbers on the stack
     MUL   = auto() # Multiply the top 2 numbers on the stack
@@ -23,6 +29,7 @@ class Token(Enum):
     SQRT  = auto() # Square root of top 2 numbers
     POW   = auto() # Last number on the stack to the power of the second to last number
 
+    # Conditionals
     IFEQ  = auto() # If equal to
     IFNEQ = auto() # If not equal to
     IFLT  = auto() # If less than
@@ -33,7 +40,9 @@ class Token(Enum):
     ELSE  = auto() # Else
     ENDIF = auto() # Ends a conditional expression
     
+    # IO
     PUT   = auto() # Put on the screen
+    DUMP  = auto() # Dumps the stack state to the screen
 
 class Instruction:
     def __init__(self: Instruction, token: Token) -> None:
