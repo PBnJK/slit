@@ -106,6 +106,46 @@ def interpret(tokens: list[Instruction]) -> None:
             
             t_idx = loop_until_else(tokens, t_idx)
 
+        elif token == Token.IFNEQ:
+            if not isclose(stack[-1], value):
+                t_idx += 1
+                if_stack.append(True)
+                continue
+            
+            t_idx = loop_until_else(tokens, t_idx)
+
+        elif token == Token.IFLT:
+            if stack[-1] < value:
+                t_idx += 1
+                if_stack.append(True)
+                continue
+            
+            t_idx = loop_until_else(tokens, t_idx)
+
+        elif token == Token.IFLET:
+            if isclose(stack[-1], value) or stack[-1] < value:
+                t_idx += 1
+                if_stack.append(True)
+                continue
+            
+            t_idx = loop_until_else(tokens, t_idx)
+
+        elif token == Token.IFGT:
+            if stack[-1] > value:
+                t_idx += 1
+                if_stack.append(True)
+                continue
+            
+            t_idx = loop_until_else(tokens, t_idx)
+
+        elif token == Token.IFGET:
+            if isclose(stack[-1], value) or stack[-1] > value:
+                t_idx += 1
+                if_stack.append(True)
+                continue
+            
+            t_idx = loop_until_else(tokens, t_idx)
+
         elif token == Token.ELSE:
             if if_stack:
                 if_stack.pop()

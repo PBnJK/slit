@@ -1,7 +1,7 @@
 pushn 2
 pushn 2
 add
-ifeq 4
+iflt 4
 	pushs "SuccessA"
 	put
 	clear
