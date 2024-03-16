@@ -115,6 +115,69 @@ class Lexer:
     def __init__(self: Lexer, program: list[str]) -> None:
         self.__program = program
         self.__rules = []
+
+        VAR_OR_NUM: str = r'(\d+|[a-zA-Z_][a-zA-Z_0-9]?$)'
+
+        self.add_rule('step', Token.STEP)
+        self.add_rule('quit(?: (\d+))?', Token.QUIT)
+
+        self.add_rule(f'pushn {VAR_OR_NUM}'  , Token.PUSHN)
+        self.add_rule('pushs (.+)', Token.PUSHS)
+
+        self.add_rule('pop', Token.POP)
+        self.add_rule('clear', Token.CLEAR)
+
+        self.add_rule('swap', Token.SWAP)
+        self.add_rule('dup', Token.DUP)
+
+        self.add_rule('add|\+', Token.ADD)
+        self.add_rule('sub|\-', Token.SUB)
+        self.add_rule('div|\/', Token.DIV)
+        self.add_rule('mul|\*', Token.MUL)
+
+        self.add_rule('mod|\%', Token.MOD)
+
+        self.add_rule('sqrt', Token.SQRT)
+        self.add_rule('pow|\^', Token.POW)
+
+        self.add_rule('sind', Token.SIND)
+        self.add_rule('sinr', Token.SINR)
+
+        self.add_rule('cosd', Token.COSD)
+        self.add_rule('cosr', Token.COSR)
+
+        self.add_rule('tand', Token.TAND)
+        self.add_rule('tanr', Token.TANR)
+
+        self.add_rule(f'(?:ifeq |== ){VAR_OR_NUM}' , Token.IFEQ)
+        self.add_rule(f'(?:ifneq |!= ){VAR_OR_NUM}', Token.IFNEQ)
+        self.add_rule(f'(?:iflt |< ){VAR_OR_NUM}'  , Token.IFLT)
+        self.add_rule(f'(?:iflet |<= ){VAR_OR_NUM}', Token.IFLET)
+        self.add_rule(f'(?:ifgt |> ){VAR_OR_NUM}'  , Token.IFGT)
+        self.add_rule(f'(?:ifget |>= ){VAR_OR_NUM}', Token.IFGET)
+
+        self.add_rule('strcmp (.+)' , Token.STRCMP)
+
+        self.add_rule('else' , Token.ELSE)
+        self.add_rule('endif', Token.ENDIF)
+        
+        self.add_rule('loop', Token.LOOP)
+        self.add_rule('eloop', Token.ENDLOOP)
+
+        self.add_rule('break', Token.BREAK)
+        self.add_rule('rerun', Token.RERUN)
+
+        self.add_rule('put$', Token.PUT)
+        self.add_rule('putraw', Token.PUTRAW)
+
+        self.add_rule('dump', Token.DUMP)
+
+        self.add_rule('print "(.+)"', Token.PRINT)
+
+        self.add_rule('read', Token.READ)
+        self.add_rule('anykey', Token.ANYKEY)
+
+        self.add_rule('(^[a-zA-Z_][a-zA-Z_0-9]?)= (.+)', Token.DECL)
     
     def add_rule(self: Lexer, rule: str, token: Token) -> None:
         self.__rules.append((rule, token))

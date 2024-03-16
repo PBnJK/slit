@@ -84,8 +84,16 @@ class VirtualMachine:
             return variables[name]
         
         return name
+    
+    def __get_string_or_var(self: VirtualMachine, variables: dict, value):
+        result = self.__str_match.match(value)
 
-    def interpret(self: VirtualMachine) -> None:
+        if not result:
+            return self.__get_variable(variables, value)
+        else:
+            return result.group(1)
+
+    def interpret(self: VirtualMachine) -> int:
         stack: list = []
 
         variables: dict = {}
@@ -95,6 +103,9 @@ class VirtualMachine:
         t_idx: int = 0
         
         step: bool = False
+
+        self.__var_match = re.compile('(^[a-zA-Z_][a-zA-Z_0-9]?$)')
+        self.__str_match = re.compile('"(.+)"')
         
         while t_idx < len(self.__program):
             token: Token = self.__program[t_idx].token
@@ -107,19 +118,16 @@ class VirtualMachine:
                 step = not step
 
             elif token == Token.QUIT:
-                if value:
-                    print(f'\nExited with error code {value}')
-                    exit(value)
-                else:
-                    print('\nExited with no errors!')
-                    exit(0)
+                return value if value else 0
 
             elif token == Token.PUSHN:
                 value = self.__get_variable(variables, value)
                 stack.append(value)
 
             elif token == Token.PUSHS:
-                stack.append(value)
+                stack.append(
+                    self.__get_string_or_var(variables, value)
+                )
 
             elif token == Token.POP:
                 stack.pop()
@@ -269,6 +277,11 @@ class VirtualMachine:
                 
                 t_idx = self.__loop_until_condend(self.__program, t_idx)
             
+            elif token == Token.STRCMP:
+                stack.append(
+                    int(self.__get_string_or_var(variables, value) == stack.pop())
+                )
+
             elif token == Token.ELSE:
                 t_idx = self.__loop_until_endif(self.__program, t_idx)
 
@@ -300,7 +313,14 @@ class VirtualMachine:
 
             elif token == Token.DECL:
                 var = self.__program[t_idx].var
-                variables[var] = float(value)
+                result = self.__str_match.match(value)
+
+                if not result:
+                    variables[var] = value
+                else:
+                    variables[var] = result.group(1)
 
             t_idx += 1
+        
+        return 0
 
