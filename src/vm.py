@@ -17,10 +17,10 @@ class VirtualMachine:
         print(error)
         exit(-1)
 
-    def __loop_until_token(
+    def __loop_until_endif(
             self: VirtualMachine,
             tokens: list[Instruction],
-            idx: int, target: Token
+            idx: int
     ) -> int:
         idx += 1
 
@@ -30,18 +30,19 @@ class VirtualMachine:
         while idx < len(tokens):
             token = tokens[idx].token
             
-            if token == target:
-                if skipped_ifs:
-                    skipped_ifs -= 1
-                else:
+            if token == Token.ENDIF:
+                skipped_ifs -= 1
+                
+                if skipped_ifs <= 0:
                     break
-            elif token in CONDITIONAL_TOKENS and tokens[idx - 1].token != Token.ELSE:
+
+            elif token in CONDITIONAL_TOKENS:
                 skipped_ifs += 1
 
             idx += 1
 
         return idx
-    
+
     def __loop_until_condend(
             self: VirtualMachine,
             tokens: list[Instruction],
@@ -56,21 +57,20 @@ class VirtualMachine:
             token = tokens[idx].token
             
             if token == Token.ENDIF:
-                if skipped_ifs:
-                    skipped_ifs -= 1
-                else:
-                    break
-            elif token == Token.ELSE:
-                if skipped_ifs:
-                    skipped_ifs -= 1
-                else:
+                skipped_ifs -= 1
+                
+                if skipped_ifs == 0:
+                    idx += 1
                     break
 
+            if token == Token.ELSE:
+                if not skipped_ifs:
+                    break
+                elif tokens[idx + 1].token in CONDITIONAL_TOKENS:
+                    idx += 1
+
             elif token in CONDITIONAL_TOKENS:
-                if tokens[idx - 1].token == Token.ELSE:
-                    skipped_ifs += 2
-                else:
-                    skipped_ifs += 1
+                skipped_ifs += 1
 
             idx += 1
 
@@ -268,11 +268,9 @@ class VirtualMachine:
                     continue
                 
                 t_idx = self.__loop_until_condend(self.__program, t_idx)
-
+            
             elif token == Token.ELSE:
-                if if_stack:
-                    if_stack -= 1
-                    t_idx = self.__loop_until_token(self.__program, t_idx, Token.ENDIF)
+                t_idx = self.__loop_until_endif(self.__program, t_idx)
 
             elif token == Token.ENDIF:
                 if_stack -= 1

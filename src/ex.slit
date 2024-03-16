@@ -6,7 +6,8 @@ print "Test suite\n\n"
 print "Pressione o número para:\n"
 print "1. Matemática\n"
 print "2. Condicionais\n"
-print "3. Loops (TODO)\n\n"
+print "3. Manipulação da Pilha\n"
+print "4. Loops (TODO)\n\n"
 
 read
 
@@ -45,67 +46,75 @@ ifeq 1
 	quit
 
 else; ifeq 2
+	print "\n=== Testando condicionais ===\n\n"
 
-print "\n=== Testando condicionais ===\n\n"
+	print "Digite um número de 0-10:\n"
+	read
 
-print "Digite um número de 0-10:\n"
-read
+	print "\n"
 
-print "\n"
-
-iflt 0
-	print "Número negativo é palhaçada!"
-else; ifgt 10
-	print "Maior que 10 não!"
-else
-	print "OK... "
-
-	iflt 5
-		print "É menor que 5... "
-	else; ifgt 5
-		print "É maior que 5... "
+	iflt 0
+		print "Número negativo é palhaçada!"
+	else; ifgt 10
+		print "Maior que 10 não!"
 	else
-		print "É 5!"
-		quit
-	endif
-	
-	# Duplica o topo da stack para preservar o input do usuário
-	dup
+		print "OK... "
 
-	pushn 2; %
-	
-	ifeq 0
-		print "É divisível por 2... "
-	else
-		print "Não é divisível por 2... "
+		iflt 5
+			print "É menor que 5... "
+		else; ifgt 5
+			print "É maior que 5... "
+		else
+			print "É 5!"
+			quit
+		endif
+		
+		# Duplica o topo da stack para preservar o input do usuário
+		dup
+
+		pushn 2; %
+		
+		ifeq 0
+			print "É divisível por 2... "
+		else
+			print "Não é divisível por 2... "
+		endif
+		
+		# Remove o resultado do %, trazendo o input duplicado pro topo da pilha!
+		pop
+		
+		# if-else enorme pra testar a robustez do sistema
+		ifeq 0
+			print "É 0!"
+		else; ifeq 1
+			print "É 1"
+		else; ifeq 2
+			print "É 2"
+		else; ifeq 3
+			print "É 3"
+		else; ifeq 4
+			print "É 4"
+		else; ifeq 5
+			print "É 5"
+		else; ifeq 6
+			print "É 6"
+		else; ifeq 7
+			print "É 7"
+		else; ifeq 8
+			print "É 8"
+		else; ifeq 9
+			print "É 9"
+		else; ifeq 10
+			print "É 10"
+		endif
 	endif
-	
-	# Remove o resultado do %, trazendo o input duplicado pro topo da pilha!
-	pop
-	
-	# if-else enorme pra testar a robustez do sistema
-	ifeq 0
-		print "É 0!"
-	else; ifeq 1
-		print "É 1"
-	else; ifeq 2
-		print "É 2"
-	else; ifeq 3
-		print "É 3"
-	else; ifeq 4
-		print "É 4"
-	else; ifeq 5
-		print "É 5"
-	else; ifeq 6
-		print "É 6"
-	else; ifeq 7
-		print "É 7"
-	else; ifeq 8
-		print "É 8"
-	else; ifeq 9
-		print "É 9"
-	else; ifeq 10
-		print "É 10"
-	endif
+else; ifeq 3
+	print "\n=== Testando manipulação da pilha ===\n\n"
+
+	print "A pilha está assim -> "
+	dump
+
+	print "\nNote que ela guarda o número que voce digitou (o 3)"
+	anykey
 endif
 
