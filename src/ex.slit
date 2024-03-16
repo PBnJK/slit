@@ -111,10 +111,24 @@ else; ifeq 2
 else; ifeq 3
 	print "\n=== Testando manipulação da pilha ===\n\n"
 
-	print "A pilha está assim -> "
+	print "A pilha é a estrutura principal que guarda todos os dados que essa linguagem uitiliza\n"
+	print "A pilha, neste exato momento, está assim -> "
 	dump
 
 	print "\nNote que ela guarda o número que voce digitou (o 3)"
 	anykey
+
+	print "\nAs operações 'pushn' e 'pushs' empurram itens para a pilha.\nVejamos primeiro a operação 'pushn' (PUSH Number):"
+	anykey
+
+	print "\nA operação 'pushn' tem o formato 'pushn N', onde N é um número qualquer.\n"
+	print "Vamos empurrar o número 5 para a pilha:\n"
+	anykey
+
+	pushn 5
+	print "\nAgora, vejamos a pilha -> "
+	dump
+
+	
 endif
 
