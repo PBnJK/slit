@@ -1,22 +1,28 @@
-pushn 2
-pushn 2
-add
-ifeq 4
-	pushs "SuccessA"
-	put
-	clear
-	pushn 2
-	pushn 2
-	ifeq 4
-		pushs "SuccessB"
-		put
-	else
-		pushs "FailureB"
-		put
-	endif
-else
-	pushs "FailureA"
-	put
-endif
-pushn 5
+# Test suite
+# Pedro B. <pedrobuitragons@gmail.com>
+
+print "6 % 2 is "
+pushn 6; pushn 2
+%
 put
+
+print "6 / 2, however, is "
+pushn 6; pushn 2
+/
+put
+
+print "What gives?\n"
+anykey
+
+print "Here, let's do this: Type a number and i'll square it:\n"
+read
+
+print "\nBlimo, zammo! "
+putraw
+
+print " squared is "
+dup
+mul
+putraw
+
+print "!!!"
