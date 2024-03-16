@@ -37,11 +37,11 @@ ifeq 1
 	pushn 49; sqrt
 	print "√49.0      == "; put
 
-	pushn 2; pushn 6; *
-	print "2.0  * 6.0 == "; put
+	pushn 90; sind
+	print "sin(90)    == "; put
 	
-	pushn 10; pushn 2; /
-	print "10.0 / 2.0 == "; put
+	pushn 90; cosd
+	print "cos(90)    == "; put
 
 	quit
 
@@ -87,48 +87,62 @@ else; ifeq 2
 		ifeq 0
 			print "É 0!"
 		else; ifeq 1
-			print "É 1"
+			print "É 1!"
 		else; ifeq 2
-			print "É 2"
+			print "É 2!"
 		else; ifeq 3
-			print "É 3"
+			print "É 3!"
 		else; ifeq 4
-			print "É 4"
+			print "É 4!"
 		else; ifeq 5
-			print "É 5"
+			print "É 5!"
 		else; ifeq 6
-			print "É 6"
+			print "É 6!"
 		else; ifeq 7
-			print "É 7"
+			print "É 7!"
 		else; ifeq 8
-			print "É 8"
+			print "É 8!"
 		else; ifeq 9
-			print "É 9"
+			print "É 9!"
 		else; ifeq 10
-			print "É 10"
+			print "É 10!"
 		endif
 	endif
 else; ifeq 3
 	print "\n=== Testando manipulação da pilha ===\n\n"
 
-	print "A pilha é a estrutura principal que guarda todos os dados que essa linguagem uitiliza\n"
+	print "A pilha é a estrutura principal que guarda todos os dados que essa linguagem utiliza\n"
 	print "A pilha, neste exato momento, está assim -> "
 	dump
 
-	print "\nNote que ela guarda o número que voce digitou (o 3)"
+	print "\nNote que ela guarda o número que voce digitou (o 3)\n"
 	anykey
 
-	print "\nAs operações 'pushn' e 'pushs' empurram itens para a pilha.\nVejamos primeiro a operação 'pushn' (PUSH Number):"
+	print "As operações 'pushn' e 'pushs' empurram itens para a pilha.\nVejamos primeiro a operação 'pushn' (PUSH Number):\n"
 	anykey
 
-	print "\nA operação 'pushn' tem o formato 'pushn N', onde N é um número qualquer.\n"
+	print "A operação 'pushn' tem o formato 'pushn N', onde N é um número qualquer.\n"
 	print "Vamos empurrar o número 5 para a pilha:\n"
 	anykey
 
 	pushn 5
-	print "\nAgora, vejamos a pilha -> "
-	dump
 
+	print "Agora, vamos ver a pilha de novo -> "
+	dump
+	anykey
+
+	print "Como pode ver, a pilha agora contém o número empurrado.\n"
+	anykey
+
+	print "O comando 'pushs' (PUSH String) é similar, só que com uma string delimitada por aspas.\n"
+	print "Vamos empurrar a frase 'Hello, world!' para a pilha:\n"
+	anykey
+
+	pushs "Hello, world!"
 	
+	print "Mais uma vez, vamos ver a pilha -> "
+	dump
+	anykey
+
 endif
 

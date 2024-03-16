@@ -188,34 +188,34 @@ class VirtualMachine:
                 stack.append(a % b)
 
             elif token == Token.SIND:
-                stack.append(
-                    math.sin(math.radians(stack.pop()))
-                )
+                stack.append(round(
+                    math.sin(math.radians(stack.pop())), 8
+                ))
             
             elif token == Token.SINR:
-                stack.append(
-                    math.sin(stack.pop())
-                )
+                stack.append(round(
+                    math.sin(stack.pop()), 8
+                ))
             
             elif token == Token.COSD:
-                stack.append(
-                    math.cos(math.radians(stack.pop()))
-                )
+                stack.append(round(
+                    math.cos(math.radians(stack.pop())), 8
+                ))
             
             elif token == Token.COSR:
-                stack.append(
-                    math.cos(stack.pop())
-                )
+                stack.append(round(
+                    math.cos(stack.pop()), 8
+                ))
             
             elif token == Token.TAND:
-                stack.append(
-                    math.tan(math.radians(stack.pop()))
-                )
+                stack.append(round(
+                    math.tan(math.radians(stack.pop())), 8
+                ))
             
             elif token == Token.TANR:
-                stack.append(
-                    math.tan(stack.pop())
-                )
+                stack.append(round(
+                    math.tan(stack.pop()), 8
+                ))
             
             elif token == Token.IFEQ:
                 value = self.__get_variable(variables, value)
