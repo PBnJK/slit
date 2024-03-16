@@ -12,6 +12,7 @@ class Token(Enum):
     
     # Debug directives
     STEP  = auto() # Prints line number + stack at every instruction
+    QUIT  = auto() # Exits the program with error code
 
     # Stack manipulation
     PUSHN = auto() # Push a number onto the stack

@@ -12,10 +12,11 @@ VAR_OR_NUM: str = r'(\d+|[a-zA-Z_][a-zA-Z_0-9]?$)'
 def main() -> None:
     lexer: Lexer = None
 
-    with open('ex.slit') as f:
+    with open('ex.slit', encoding="utf-8") as f:
         lexer = Lexer(f.readlines())
     
     lexer.add_rule('step', Token.STEP)
+    lexer.add_rule('quit(?: (\d+))?', Token.QUIT)
 
     lexer.add_rule(f'pushn {VAR_OR_NUM}'  , Token.PUSHN)
     lexer.add_rule('pushs "(\D+)"', Token.PUSHS)
@@ -34,7 +35,7 @@ def main() -> None:
     lexer.add_rule('mod|\%', Token.MOD)
 
     lexer.add_rule('sqrt', Token.SQRT)
-    lexer.add_rule('pow|\*\*', Token.POW)
+    lexer.add_rule('pow|\^', Token.POW)
 
     lexer.add_rule('sind', Token.SIND)
     lexer.add_rule('sinr', Token.SINR)

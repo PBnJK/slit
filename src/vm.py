@@ -35,14 +35,18 @@ class VirtualMachine:
                     skipped_ifs -= 1
                 else:
                     break
-            elif token in CONDITIONAL_TOKENS:
+            elif token in CONDITIONAL_TOKENS and tokens[idx - 1].token != Token.ELSE:
                 skipped_ifs += 1
 
             idx += 1
 
         return idx
     
-    def __loop_until_condend(self: VirtualMachine, tokens: list[Instruction], idx: int) -> int:
+    def __loop_until_condend(
+            self: VirtualMachine,
+            tokens: list[Instruction],
+            idx: int
+    ) -> int:
         idx += 1
 
         token: Token = None
@@ -51,13 +55,22 @@ class VirtualMachine:
         while idx < len(tokens):
             token = tokens[idx].token
             
-            if token in (Token.ENDIF, Token.ELSE):
+            if token == Token.ENDIF:
                 if skipped_ifs:
                     skipped_ifs -= 1
                 else:
                     break
+            elif token == Token.ELSE:
+                if skipped_ifs:
+                    skipped_ifs -= 1
+                else:
+                    break
+
             elif token in CONDITIONAL_TOKENS:
-                skipped_ifs += 1
+                if tokens[idx - 1].token == Token.ELSE:
+                    skipped_ifs += 2
+                else:
+                    skipped_ifs += 1
 
             idx += 1
 
@@ -92,6 +105,14 @@ class VirtualMachine:
 
             if token == Token.STEP:
                 step = not step
+
+            elif token == Token.QUIT:
+                if value:
+                    print(f'\nExited with error code {value}')
+                    exit(value)
+                else:
+                    print('\nExited with no errors!')
+                    exit(0)
 
             elif token == Token.PUSHN:
                 value = self.__get_variable(variables, value)

@@ -1,11 +1,111 @@
 # Test suite
 # Pedro B. <pedrobuitragons@gmail.com>
 
-AA= 7
+print "Test suite\n\n"
 
-pushn AA
-ifeq 2
-	print "boob"
-else; ifeq 25
-	print "babble"
+print "Pressione o número para:\n"
+print "1. Matemática\n"
+print "2. Condicionais\n"
+print "3. Loops (TODO)\n\n"
+
+read
+
+ifeq 1
+	print "\n=== Testando matemática ===\n"
+	
+	pushn 2; pushn 4; +
+	print "2.0  + 4.0 == "; put
+	
+	pushn 5; pushn 2; -
+	print "5.0  - 2.0 == "; put
+
+	pushn 2; pushn 6; *
+	print "2.0  * 6.0 == "; put
+	
+	pushn 10; pushn 2; /
+	print "10.0 / 2.0 == "; put
+
+	pushn 10; pushn 2; %
+	print "10.0 % 2.0 == "; put
+
+	print "\n"
+
+	pushn 10; pushn 3; ^
+	print "10.0 ^ 3.0 == "; put
+	
+	pushn 49; sqrt
+	print "√49.0      == "; put
+
+	pushn 2; pushn 6; *
+	print "2.0  * 6.0 == "; put
+	
+	pushn 10; pushn 2; /
+	print "10.0 / 2.0 == "; put
+
+	quit
+
+else; ifeq 2
+
+print "\n=== Testando condicionais ===\n\n"
+
+print "Digite um número de 0-10:\n"
+read
+
+print "\n"
+
+iflt 0
+	print "Número negativo é palhaçada!"
+else; ifgt 10
+	print "Maior que 10 não!"
+else
+	print "OK... "
+
+	iflt 5
+		print "É menor que 5... "
+	else; ifgt 5
+		print "É maior que 5... "
+	else
+		print "É 5!"
+		quit
+	endif
+	
+	# Duplica o topo da stack para preservar o input do usuário
+	dup
+
+	pushn 2; %
+	
+	ifeq 0
+		print "É divisível por 2... "
+	else
+		print "Não é divisível por 2... "
+	endif
+	
+	# Remove o resultado do %, trazendo o input duplicado pro topo da pilha!
+	pop
+	
+	# if-else enorme pra testar a robustez do sistema
+	ifeq 0
+		print "É 0!"
+	else; ifeq 1
+		print "É 1"
+	else; ifeq 2
+		print "É 2"
+	else; ifeq 3
+		print "É 3"
+	else; ifeq 4
+		print "É 4"
+	else; ifeq 5
+		print "É 5"
+	else; ifeq 6
+		print "É 6"
+	else; ifeq 7
+		print "É 7"
+	else; ifeq 8
+		print "É 8"
+	else; ifeq 9
+		print "É 9"
+	else; ifeq 10
+		print "É 10"
+	endif
 endif
+
