@@ -7,6 +7,8 @@ from __future__ import annotations
 from lexer import Lexer, Token
 from vm import VirtualMachine
 
+VAR_OR_NUM: str = r'(\d+|[a-zA-Z_][a-zA-Z_0-9]?$)'
+
 def main() -> None:
     lexer: Lexer = None
 
@@ -15,7 +17,7 @@ def main() -> None:
     
     lexer.add_rule('step', Token.STEP)
 
-    lexer.add_rule('pushn (\d+)'  , Token.PUSHN)
+    lexer.add_rule(f'pushn {VAR_OR_NUM}'  , Token.PUSHN)
     lexer.add_rule('pushs "(\D+)"', Token.PUSHS)
 
     lexer.add_rule('pop', Token.POP)
@@ -43,12 +45,14 @@ def main() -> None:
     lexer.add_rule('tand', Token.TAND)
     lexer.add_rule('tanr', Token.TANR)
 
-    lexer.add_rule('(?:ifeq |== )(\d+)' , Token.IFEQ)
-    lexer.add_rule('(?:ifneq |!= )(\d+)', Token.IFNEQ)
-    lexer.add_rule('(?:iflt |< )(\d+)'  , Token.IFLT)
-    lexer.add_rule('(?:iflet |<= )(\d+)', Token.IFLET)
-    lexer.add_rule('(?:ifgt |> )(\d+)'  , Token.IFGT)
-    lexer.add_rule('(?:ifget |>= )(\d+)', Token.IFGET)
+    lexer.add_rule(f'(?:ifeq |== ){VAR_OR_NUM}' , Token.IFEQ)
+    lexer.add_rule(f'(?:ifneq |!= ){VAR_OR_NUM}', Token.IFNEQ)
+    lexer.add_rule(f'(?:iflt |< ){VAR_OR_NUM}'  , Token.IFLT)
+    lexer.add_rule(f'(?:iflet |<= ){VAR_OR_NUM}', Token.IFLET)
+    lexer.add_rule(f'(?:ifgt |> ){VAR_OR_NUM}'  , Token.IFGT)
+    lexer.add_rule(f'(?:ifget |>= ){VAR_OR_NUM}', Token.IFGET)
+
+    lexer.add_rule('strcmp' , Token.STRCMP)
 
     lexer.add_rule('else' , Token.ELSE)
     lexer.add_rule('endif', Token.ENDIF)
@@ -68,6 +72,8 @@ def main() -> None:
 
     lexer.add_rule('read', Token.READ)
     lexer.add_rule('anykey', Token.ANYKEY)
+
+    lexer.add_rule('(^[a-zA-Z_][a-zA-Z_0-9]?)= (\d+)', Token.DECL)
 
     vm: VirtualMachine = VirtualMachine(lexer.lex())
     vm.interpret()

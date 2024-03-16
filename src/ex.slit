@@ -1,28 +1,11 @@
 # Test suite
 # Pedro B. <pedrobuitragons@gmail.com>
 
-print "6 % 2 is "
-pushn 6; pushn 2
-%
-put
+AA= 7
 
-print "6 / 2, however, is "
-pushn 6; pushn 2
-/
-put
-
-print "What gives?\n"
-anykey
-
-print "Here, let's do this: Type a number and i'll square it:\n"
-read
-
-print "\nBlimo, zammo! "
-putraw
-
-print " squared is "
-dup
-mul
-putraw
-
-print "!!!"
+pushn AA
+ifeq 2
+	print "boob"
+else; ifeq 25
+	print "babble"
+endif

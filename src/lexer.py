@@ -51,6 +51,8 @@ class Token(Enum):
     IFGT  = auto() # If greater than
     IFGET = auto() # If greater than or equal to
 
+    STRCMP= auto() # Compare strings
+
     ELSE  = auto() # Else
     ENDIF = auto() # Ends a conditional expression
 
@@ -59,7 +61,7 @@ class Token(Enum):
     ENDLOOP = auto() # End loop
 
     BREAK = auto() # Breaks out of the loop
-    RERUN = auto() # Runs the loop back from the beginning (same as the continue keyword)
+    RERUN = auto() # Runs the loop back from the beginning (same as continue)
     
     # IO
     PUT    = auto() # Put on the screen
@@ -71,6 +73,9 @@ class Token(Enum):
 
     READ   = auto() # Reads user input and puts on the stack
     ANYKEY = auto() # Waits for any user key (doesn't push to stack)
+
+    # Variables
+    DECL   = auto() # Variable declaration
 
 CONDITIONAL_TOKENS: tuple[Token] = (
     Token.IFEQ, Token.IFNEQ,
@@ -99,6 +104,12 @@ class InstructionString(Instruction):
         super().__init__(token)
         self.value = value
 
+class InstructionVar(Instruction):
+    def __init__(self: InstructionString, token: Token, var: str, value: int) -> None:
+        super().__init__(token)
+        self.var   = var
+        self.value = value
+
 class Lexer:
     def __init__(self: Lexer, program: list[str]) -> None:
         self.__program = program
@@ -120,13 +131,20 @@ class Lexer:
 
             try:
                 value = result.group(1)
+                
+                try:
+                    var = value
+                    value = result.group(2)
 
-                if value.isdigit():
-                    return InstructionNumber(tk, float(value))
+                    return InstructionVar(tk, var, value)
+                except:
+
+                    if value.isdigit():
+                        return InstructionNumber(tk, float(value))
                
-                # Avoids newlines/backslashes getting escaped
-                value = value.encode('raw_unicode_escape').decode('unicode_escape')
-                return InstructionString(tk, value)
+                    # Avoids newlines/backslashes getting escaped
+                    value = value.encode('raw_unicode_escape').decode('unicode_escape')
+                    return InstructionString(tk, value)
             except:
                 return Instruction(tk)
 

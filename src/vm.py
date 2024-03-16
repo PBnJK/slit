@@ -5,12 +5,18 @@
 from __future__ import annotations
 
 from lexer import Token, Instruction, CONDITIONAL_TOKENS
+
 import math
+import re
 
 class VirtualMachine:
     def __init__(self: VirtualMachine, program: list[Instruction]) -> None:
         self.__program = program
     
+    def __throw(self: VirtualMachine, error: str) -> None:
+        print(error)
+        exit(-1)
+
     def __loop_until_token(
             self: VirtualMachine,
             tokens: list[Instruction],
@@ -56,9 +62,21 @@ class VirtualMachine:
             idx += 1
 
         return idx
+    
+    def __get_variable(self: VirtualMachine, variables: dict, name):
+        if isinstance(name, str):
+            if name not in variables:
+                self.__throw(f'Undeclared variable {name}!')
+            
+            return variables[name]
+        
+        return name
 
     def interpret(self: VirtualMachine) -> None:
         stack: list = []
+
+        variables: dict = {}
+        consts: dict = {}
 
         if_stack: int = 0
         t_idx: int = 0
@@ -75,7 +93,11 @@ class VirtualMachine:
             if token == Token.STEP:
                 step = not step
 
-            elif token in (Token.PUSHN, Token.PUSHS):
+            elif token == Token.PUSHN:
+                value = self.__get_variable(variables, value)
+                stack.append(value)
+
+            elif token == Token.PUSHS:
                 stack.append(value)
 
             elif token == Token.POP:
@@ -167,6 +189,8 @@ class VirtualMachine:
                 )
             
             elif token == Token.IFEQ:
+                value = self.__get_variable(variables, value)
+
                 if math.isclose(stack[-1], value):
                     t_idx += 1
                     if_stack += 1
@@ -175,6 +199,8 @@ class VirtualMachine:
                 t_idx = self.__loop_until_condend(self.__program, t_idx)
 
             elif token == Token.IFNEQ:
+                value = self.__get_variable(variables, value)
+
                 if not math.isclose(stack[-1], value):
                     t_idx += 1
                     if_stack += 1
@@ -183,6 +209,8 @@ class VirtualMachine:
                 t_idx = self.__loop_until_condend(self.__program, t_idx)
 
             elif token == Token.IFLT:
+                value = self.__get_variable(variables, value)
+
                 if stack[-1] < value:
                     t_idx += 1
                     if_stack += 1
@@ -191,6 +219,8 @@ class VirtualMachine:
                 t_idx = self.__loop_until_condend(self.__program, t_idx)
 
             elif token == Token.IFLET:
+                value = self.__get_variable(variables, value)
+
                 if math.isclose(stack[-1], value) or stack[-1] < value:
                     t_idx += 1
                     if_stack += 1
@@ -199,6 +229,8 @@ class VirtualMachine:
                 t_idx = self.__loop_until_condend(self.__program, t_idx)
 
             elif token == Token.IFGT:
+                value = self.__get_variable(variables, value)
+
                 if stack[-1] > value:
                     t_idx += 1
                     if_stack += 1
@@ -207,6 +239,8 @@ class VirtualMachine:
                 t_idx = self.__loop_until_condend(self.__program, t_idx)
 
             elif token == Token.IFGET:
+                value = self.__get_variable(variables, value)
+
                 if math.isclose(stack[-1], value) or stack[-1] > value:
                     t_idx += 1
                     if_stack += 1
@@ -241,9 +275,13 @@ class VirtualMachine:
                     stack.append(float(val))
                 except:
                     stack.append(val)
-                
+
             elif token == Token.ANYKEY:
                 input()
+
+            elif token == Token.DECL:
+                var = self.__program[t_idx].var
+                variables[var] = float(value)
 
             t_idx += 1
 
