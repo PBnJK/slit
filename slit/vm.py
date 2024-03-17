@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from lexer import Token, Instruction, CONDITIONAL_TOKENS
+from .lexer import Token, Instruction, CONDITIONAL_TOKENS
 
 import math
 import re
@@ -61,6 +61,8 @@ class VirtualMachine:
                 
                 if skipped_ifs == 0:
                     idx += 1
+                    break
+                elif skipped_ifs < 0:
                     break
 
             if token == Token.ELSE:

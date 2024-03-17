@@ -15,13 +15,13 @@ ifeq 1
 	print "\n=== Testando matemática ===\n"
 	
 	pushn 2; pushn 4; +
-	print "2.0  + 4.0 == "; put
+	print " 2.0 + 4.0 == "; put
 	
 	pushn 5; pushn 2; -
-	print "5.0  - 2.0 == "; put
+	print " 5.0 - 2.0 == "; put
 
 	pushn 2; pushn 6; *
-	print "2.0  * 6.0 == "; put
+	print " 2.0 * 6.0 == "; put
 	
 	pushn 10; pushn 2; /
 	print "10.0 / 2.0 == "; put
@@ -29,19 +29,20 @@ ifeq 1
 	pushn 10; pushn 2; %
 	print "10.0 % 2.0 == "; put
 
-	print "\n"
-
 	pushn 10; pushn 3; ^
-	print "10.0 ^ 3.0 == "; put
+	print "\n10.0 ^ 3.0 == "; put
 	
 	pushn 49; sqrt
-	print "√49.0      == "; put
+	print "     √49.0 == "; put
 
 	pushn 90; sind
-	print "sin(90)    == "; put
+	print "   sin(90) == "; put
 	
 	pushn 90; cosd
-	print "cos(90)    == "; put
+	print "   cos(90) == "; put
+
+	print "\nPilha -> "
+	dump
 
 	quit
 

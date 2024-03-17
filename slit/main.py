@@ -4,18 +4,15 @@
 
 from __future__ import annotations
 
-from lexer import Lexer, Token
-from vm import VirtualMachine
+from .vm    import VirtualMachine
+from .lexer import Lexer
 
-
-def main() -> None:
+def run_program(program_path: str) -> int:
     lexer: Lexer = None
 
-    with open('ex.slit', encoding="utf-8") as f:
+    with open(program_path, encoding="utf-8") as f:
         lexer = Lexer(f.readlines())
 
     vm: VirtualMachine = VirtualMachine(lexer.lex())
-    res = vm.interpret()
+    return vm.interpret()
 
-if __name__ == '__main__':
-    main()

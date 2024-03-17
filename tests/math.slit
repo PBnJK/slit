@@ -1,0 +1,27 @@
+# SLIT Test File
+# Tests math utilities
+
+pushn 2; dup; +
+ifneq 4
+	print "Addition failed"
+	quit 1
+endif
+
+pushn 4; pushn 2; -
+ifneq 2
+	print "Subtraction failed"
+	quit 2
+endif
+
+pushn 6; dup; *
+ifneq 36
+	print "Multiplication failed"
+	quit 3
+endif
+
+pushn 10; pushn 2; /
+ifneq 5
+	print "Division failed"
+	quit 4
+endif
+
